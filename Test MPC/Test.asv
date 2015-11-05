@@ -4,7 +4,7 @@ clf
 
 %% Simulation conditions
 
-M=30; %simulation time
+M=5; %simulation time
 
 %% Parameters
 task=struct;
@@ -19,7 +19,7 @@ B=[1 0; 0 0];
 C=[1;1];
 
  yd=task.road.lanewidth/2;
- xd=100/3.6;
+ xd=70/3.6;
 
 posX=0;
 x=0;
@@ -49,10 +49,10 @@ RR=eye(N*size(B,2))*R;
 QQ=blkdiag(kron(eye((N)),Q),pf);
 QR=blkdiag(QQ,RR);
 
-% Max acceleration constraint
+% Max velocity constraint
 Ain=zeros(size(A,1)*N,(size(A,1)+size(B,1))*N);
-Ain(1,5)=1;
-bin=[2 0 0 0]';
+Ain(1,1)=1;
+bin=[0.001 0 0 0]';
 
 %% Cost function
 H=2*QR; %1/2
@@ -74,13 +74,13 @@ for i=1:M
     %% Controller
 
     
-   beq=AA*(xk-[xd;yd]); 
+   beq=AA*(xk+[xd;yd]); 
 
     % The matrix AA defines how the last measured Akzk = bk for zk =ured state xk
     % determines the right hand side of the inequality condition.
     z=quadprog(H,f,Ain,bin,Aeq,beq,[],[],[],options);
     uk=z(sizeA*N+1);
-    xk=A*xk+B*uk
+    xk=A*xk+B*uk;
     
     uvec(:,i)=uk;
     vvec(i)=xk(1);
@@ -92,5 +92,6 @@ for i=1:M
     plotroad(task,M*20)
     plotcar(posX,posY)
     pause(0.050)
+Ain*z
     
 end
