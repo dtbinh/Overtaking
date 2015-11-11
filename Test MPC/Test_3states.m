@@ -3,7 +3,7 @@ clc
 clf
 T=1;
 %% Simulation conditions
-simulate=1;
+simulate=1; % Show simulation in RT
 M=200/T; %simulation time
 
 %% Parameters
@@ -50,8 +50,9 @@ QQ=kron(eye((N)),Q);
 QR=blkdiag(QQ,RR);
 
 %% Inequality constraints
-nCon=5; %number of constraints
-Ain=zeros(nCon,(size(A,1)+size(B,2))*N);
+nCon=7; %number of constraints
+AinStates=zeros(nCon,size(A,2));
+AinInput=zeros(nCon,size(B,2));
 bin=zeros(nCon,1);
 
 
@@ -77,38 +78,42 @@ for i=1:M
     
     
 
-    %% Update leading vehicle
+%% Update leading vehicle
     xL=xL+vL;
     
     
     %% Inequality constraints
 %Max acceleration and braking
-Ain(1,sizeA*N+1)=1;
-Ain(1,sizeA*N+1)=-1;
+AinInput(1,1)=1;
+AinInput(2,1)=-1;
 bin(1,1)=2;
 bin(2,1)=2;
 
 %Max lane changing speed
-Ain(3,sizeA*N+2)=0;%1;
-Ain(4,sizeA*N+2)=0;%-1;
+AinInput(3,2)=1;
+AinInput(4,2)=-1;
 bin(3,1)=sMax*xk(2);
 bin(4,1)=sMax*xk(2);
 
 %Stay on the road
-Ain(5,3)=1;
-Ain(6,3)=-1;
+AinStates(5,3)=1;
+AinStates(6,3)=-1;
 bin(5,1)=task.road.lanewidth*2;
 bin(6,1)=0;
 
 %Min distance to car ahead 
-if abs(xL-xk(1))<100
-    xk(3)
-    Ain(7,6)=1;
-    bin(7,1)=xk(3)-yL-task.road.lanewidth;
-else
-    Ain(7,3)=0;
-    bin(7,1)=0;
+AinStates(7,1)=1;
+bin(7,1)=xL-100;
+
+%Create Ain
+Ain=AinStates;
+for i=1:N-1
+Ain=[Ain AinStates];
 end
+for i=1:N
+Ain=[Ain AinInput];
+end
+
 
     
 
@@ -138,10 +143,7 @@ end
         posY(i)=xk(3);
         posXL(i)=xL;
     end
-    
-    %posX=posX+xk(1)*T;
-    posX(i)=xk(1);
-    posY(i)=xk(3);
+
     
     %plotcar(posX,posY)
    %pause(0.001)
@@ -151,11 +153,11 @@ end
 end
 if simulate == 0
     plotroad(task,M*110/3.6)
-    plotcar(posX,posY)
-    plotcar(posXL,yL*ones(1,M))
+    plotcar(posX,posY,'r*')
+    plotcar(posXL,yL*ones(1,M),'b*')
 end
-% figure(2)
-% hold off
+figure(2)
+hold off
 % plot(vvec(1,:));hold on
-% plot(vvec(2,:))
+plot(vvec(2,:))
 % grid
