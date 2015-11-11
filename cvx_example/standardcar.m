@@ -26,7 +26,7 @@ v.Daymin=-2.5;              %[m/s3] minimum lateral jerk
 v.Daymax=2.5;               %[m/s3] maximum lateral jerk
 
 v.maxslipangle=10*pi/180;   %[rad] max slip angle
-v.horizon=130;              %[m] receeding horizon
+v.horizon=2;              %[m] receeding horizon
 
 
 

@@ -1,0 +1,7 @@
+function []=plotcar(pos1,pos2,task)
+
+% plot the road
+figure(1)
+hold on
+plot(pos1,pos2,'r*')
+end
