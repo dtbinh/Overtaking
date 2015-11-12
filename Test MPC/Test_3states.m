@@ -27,7 +27,7 @@ x0=0;
 posX=x0;
 xdot0=0;
 y0=task.road.lanewidth/2;
-xv0=[x0 xdot0 task.road.lanewidth/2];
+xk=[x0 xdot0 task.road.lanewidth/2]';
 %T=task.Ego.horizon/task.N;
 % N=task.Ego.horizon;
 vvec=[0 0 0]';
@@ -118,7 +118,7 @@ end
     
 
     %% Controller
-   vvec=[vvec xk];
+
    beq=AA*(xk-[xd;xdotd;yd]); 
    
     % The matrix AA defines how the last measured Akzk = bk for zk =ured state xk
