@@ -11,23 +11,23 @@ task=struct;
 task.road=roadsegment;
 task.Ego=standardcar;  
 task.N=2; 
-N=task.N; %Number of samples (som Nikolce)                                                         %Som Nikolce
+N=150; %Number of samples (som Nikolce)                                                         %Som Nikolce
 task.s=linspace(0,task.Ego.horizon,task.N)';                                    %[m] relative distance vector
 task.ds=task.s(2)-task.s(1);  
 A=[1 T 0;0 1 0;0 0 1];
-B=[T^2/2 0;T 0; 0 T];
-C=[0 0 0;0 1 0;0 0 1];
+B=[0;0;T];
+C=[0 0 1];
 
 
 xd=0;                          % Setpoint x
 xdotd=110/3.6;                  % Setpoint xd
 yd=task.road.lanewidth/2;     % Setpoint y
 
-posX=0;
-x=0;
-xdot=0;
-xv0=[x xdot task.road.lanewidth/2];
-xk=xv0';
+x0=0;
+posX=x0;
+xdot0=0;
+y0=task.road.lanewidth/2;
+xv0=[x0 xdot0 task.road.lanewidth/2];
 %T=task.Ego.horizon/task.N;
 % N=task.Ego.horizon;
 vvec=[0 0 0]';
@@ -72,12 +72,12 @@ options = optimset('Algorithm','interior-point-convex','Display','off');
 vL=70/3.6;
 xL=700;
 yL=task.road.lanewidth/2;
-
+ymax=ones(1,N)*8;
+ymin=zeros(1,N);
+ymin(floor(N/3):floor(N/2))=3*ones(1,length(ymin(floor(N/3):floor(N/2))));
+%%
 %For loop
 for i=1:M
-    
-    
-
 %% Update leading vehicle
     xL=xL+vL;
     
