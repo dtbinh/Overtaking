@@ -91,7 +91,7 @@ for i=1:M
     posY=xk(2);
     clf
     plotroad(task,M*20)
-    plotcar(posX,posY)
+    plotcar(posX,posY, 'r')
     pause(0.050)
     
 end
