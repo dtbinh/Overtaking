@@ -23,7 +23,7 @@ miny = min(yc);
 maxy = max(yc);
 figure(1); clf; hold on;
 
-for k = 400:length(t)
+for k = 1:length(t)
 
     s1 = subplot(2, 2, 1);
     cla(s1); hold on;
@@ -36,7 +36,7 @@ for k = 400:length(t)
     plot(xc, yc);
     plotCar(xc(k), yc(k), phi(k), delta(k));
     axis([xc(k)-5, xc(k)+5, yc(k)-5, yc(k)+5]);
-    axis equal
+%     axis equal
     
 %     s3 = subplot(2, 2, 3);
 %     cla(s3); hold on;
