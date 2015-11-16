@@ -2067,10 +2067,10 @@ extern void utFree(void*);
 
 void sf_c5_Modified_get_check_sum(mxArray *plhs[])
 {
-  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(2460042463U);
-  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(2586855256U);
-  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(2858596457U);
-  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(2985776748U);
+  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(3819042942U);
+  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(3797029493U);
+  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(1694905963U);
+  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(3102988915U);
 }
 
 mxArray* sf_c5_Modified_get_post_codegen_info(void);
@@ -2420,7 +2420,7 @@ static void chart_debug_initialization(SimStruct *S, unsigned int
 
 static const char* sf_get_instance_specialization(void)
 {
-  return "NrdeWHcB9FrTELONGTIl0E";
+  return "aVcLF4aeXNV7qLRkFPcTHD";
 }
 
 static void sf_opaque_initialize_c5_Modified(void *chartInstanceVar)
@@ -2560,10 +2560,10 @@ static void mdlSetWorkWidths_c5_Modified(SimStruct *S)
   }
 
   ssSetOptions(S,ssGetOptions(S)|SS_OPTION_WORKS_WITH_CODE_REUSE);
-  ssSetChecksum0(S,(655255679U));
-  ssSetChecksum1(S,(113952167U));
-  ssSetChecksum2(S,(154558070U));
-  ssSetChecksum3(S,(1615440874U));
+  ssSetChecksum0(S,(2279959184U));
+  ssSetChecksum1(S,(855744558U));
+  ssSetChecksum2(S,(1405378378U));
+  ssSetChecksum3(S,(354239525U));
   ssSetmdlDerivatives(S, NULL);
   ssSetExplicitFCSSCtrl(S,1);
   ssSupportsMultipleExecInstances(S,1);
