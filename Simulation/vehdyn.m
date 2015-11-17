@@ -21,6 +21,6 @@ dx(1) = x2*x3 + 1/m*(   - 2*Cy*( -(x2+a*x3)/x1)*sin(u5) + Cx*(u3+u4) - CA*x1^2);
  
 dx(2) = -x1*x3 + 1/m*(  Cx*(u1+u2)*sin(u5) + 2*Cy*(u5-(x2+a*x3)/x1)*cos(u5) + 2*Cy*(b*x3-x2)/x1);
 
-dx(3) = (1/J)*(  a*(  Cx*(u1+u2*sin(u5)+ 2*Cy*(u5 - (x2+a*x3)/x1)*cos(u5)) - 2*b*Cy*(b*x3-x2)/x1));
+dx(3) = (1/J)*(  a*(  Cx*(u1+u2*sin(u5)+ 2*Cy*(u5 - (x2+a*x3)/x1)*cos(u5) ) - 2*b*Cy*(b*x3-x2)/x1));
 
 end

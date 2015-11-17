@@ -1,0 +1,93 @@
+CC     = "C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\bin\lcc64.exe"
+LD     = "C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\bin\lcclnk64.exe"
+LIBCMD = "C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\bin\lcclib64.exe"
+CFLAGS = -dll -noregistrylookup  -c -Zp8 -DLCC_WIN64 -DMATLAB_MEX_FILE -DMX_COMPAT_32 -nodeclspec 
+LDFLAGS = -s -dll -L"C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\lib64" -entry LibMain -map sfun.map 
+LIBFLAGS = 
+
+OBJECTS = \
+	"AllPurposeModel_TyreRelaxation_sfun.obj"\
+	"c1_AllPurposeModel_TyreRelaxation.obj"\
+	"c2_AllPurposeModel_TyreRelaxation.obj"\
+	"c3_AllPurposeModel_TyreRelaxation.obj"\
+	"c4_AllPurposeModel_TyreRelaxation.obj"\
+	"c5_AllPurposeModel_TyreRelaxation.obj"\
+	"c6_AllPurposeModel_TyreRelaxation.obj"\
+	"c7_AllPurposeModel_TyreRelaxation.obj"\
+	"c8_AllPurposeModel_TyreRelaxation.obj"\
+	"c9_AllPurposeModel_TyreRelaxation.obj"\
+	"c10_AllPurposeModel_TyreRelaxation.obj"\
+	"c11_AllPurposeModel_TyreRelaxation.obj"\
+	"c12_AllPurposeModel_TyreRelaxation.obj"\
+	"c13_AllPurposeModel_TyreRelaxation.obj"\
+	"c15_AllPurposeModel_TyreRelaxation.obj"\
+	"c19_AllPurposeModel_TyreRelaxation.obj"\
+	"c20_AllPurposeModel_TyreRelaxation.obj"\
+	"c26_AllPurposeModel_TyreRelaxation.obj"\
+	"c27_AllPurposeModel_TyreRelaxation.obj"\
+	"c28_AllPurposeModel_TyreRelaxation.obj"\
+	"AllPurposeModel_TyreRelaxation_sfun_registry.obj"\
+	"lccstub.obj"\
+	"AllPurposeModel_TyreRelaxation_sfun.def"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\sf_runtime.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmwblas.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmx.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmex.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmat.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libfixedpoint.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libut.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmwmathutil.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libemlrt.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmwsl_log_load_blocks.lib"\
+	"C:\Program Files\MATLAB\R2014b\extern\lib\win64\microsoft\libmwsimulink.lib"\
+	"C:\Program Files\MATLAB\R2014b\lib\win64\libmwipp.lib"\
+
+INCLUDE_PATH= -I"C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\include64"  -I"C:\Program Files\MATLAB\R2014b\extern\include"  -I"C:\Program Files\MATLAB\R2014b\simulink\include"  -I"C:\Program Files\MATLAB\R2014b\stateflow\c\mex\include"  -I"C:\Program Files\MATLAB\R2014b\rtw\c\src"  -I"C:\Users\Daniel\Downloads\AllPurposeModel_toCourseWeb\slprj\_sfprj\AllPurposeModel_TyreRelaxation\_self\sfun\src" 
+ 
+
+AllPurposeModel_TyreRelaxation_sfun.mexw64 : $(MAKEFILE) $(OBJECTS)
+	$(LD) $(LDFLAGS) -o AllPurposeModel_TyreRelaxation_sfun.mexw64 @AllPurposeModel_TyreRelaxation_sfun.lmko
+AllPurposeModel_TyreRelaxation_sfun.obj :	"AllPurposeModel_TyreRelaxation_sfun.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "AllPurposeModel_TyreRelaxation_sfun.c"
+c1_AllPurposeModel_TyreRelaxation.obj :	"c1_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c1_AllPurposeModel_TyreRelaxation.c"
+c2_AllPurposeModel_TyreRelaxation.obj :	"c2_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_AllPurposeModel_TyreRelaxation.c"
+c3_AllPurposeModel_TyreRelaxation.obj :	"c3_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c3_AllPurposeModel_TyreRelaxation.c"
+c4_AllPurposeModel_TyreRelaxation.obj :	"c4_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c4_AllPurposeModel_TyreRelaxation.c"
+c5_AllPurposeModel_TyreRelaxation.obj :	"c5_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c5_AllPurposeModel_TyreRelaxation.c"
+c6_AllPurposeModel_TyreRelaxation.obj :	"c6_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c6_AllPurposeModel_TyreRelaxation.c"
+c7_AllPurposeModel_TyreRelaxation.obj :	"c7_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c7_AllPurposeModel_TyreRelaxation.c"
+c8_AllPurposeModel_TyreRelaxation.obj :	"c8_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c8_AllPurposeModel_TyreRelaxation.c"
+c9_AllPurposeModel_TyreRelaxation.obj :	"c9_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c9_AllPurposeModel_TyreRelaxation.c"
+c10_AllPurposeModel_TyreRelaxation.obj :	"c10_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c10_AllPurposeModel_TyreRelaxation.c"
+c11_AllPurposeModel_TyreRelaxation.obj :	"c11_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c11_AllPurposeModel_TyreRelaxation.c"
+c12_AllPurposeModel_TyreRelaxation.obj :	"c12_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c12_AllPurposeModel_TyreRelaxation.c"
+c13_AllPurposeModel_TyreRelaxation.obj :	"c13_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c13_AllPurposeModel_TyreRelaxation.c"
+c15_AllPurposeModel_TyreRelaxation.obj :	"c15_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c15_AllPurposeModel_TyreRelaxation.c"
+c19_AllPurposeModel_TyreRelaxation.obj :	"c19_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c19_AllPurposeModel_TyreRelaxation.c"
+c20_AllPurposeModel_TyreRelaxation.obj :	"c20_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c20_AllPurposeModel_TyreRelaxation.c"
+c26_AllPurposeModel_TyreRelaxation.obj :	"c26_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c26_AllPurposeModel_TyreRelaxation.c"
+c27_AllPurposeModel_TyreRelaxation.obj :	"c27_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c27_AllPurposeModel_TyreRelaxation.c"
+c28_AllPurposeModel_TyreRelaxation.obj :	"c28_AllPurposeModel_TyreRelaxation.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c28_AllPurposeModel_TyreRelaxation.c"
+AllPurposeModel_TyreRelaxation_sfun_registry.obj :	"AllPurposeModel_TyreRelaxation_sfun_registry.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "AllPurposeModel_TyreRelaxation_sfun_registry.c"
+lccstub.obj :	"C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\mex\lccstub.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "C:\Program Files\MATLAB\R2014b\sys\lcc64\lcc64\mex\lccstub.c"
