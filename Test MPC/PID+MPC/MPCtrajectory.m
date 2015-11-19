@@ -1,4 +1,4 @@
-function [vvec yvec bound xsp]=MPCtrajectory(A,B,C,D,task, ph, obstacle,xsp,x0,q,r,vE)
+function [vvec,yvec,bound,xsp]=MPCtrajectory(A,B,C,D,task,ph,obstacle,xsp,x0,q,r,vL)
 tic
 %% Parameters
 safetymargin=task.Ego.longsafetymargin;
@@ -7,13 +7,14 @@ n = size(A,2);                          % Number of states
 m = size(B,2);                          % Number of inputs
 
 %% State/input penalty
-
-forbidden=[round((obstacle-3*safetymargin)/vE) round((obstacle+3*safetymargin)/vE)];
+%if obstacle>=-4*safetymargin
+forbidden=[round((obstacle-4*safetymargin)/vL) round((obstacle+4*safetymargin)/vL)];
 for i=1:ph
     if i>=forbidden(1) && i<=forbidden(2)
     xsp(2,i)=7.5;
     end
 end
+%end
 
 H = 2*blkdiag(kron(eye(ph),C'*q*C),kron(eye(ph),eye(m)*r));
 
@@ -39,22 +40,24 @@ Ain=zeros(nCon*ph,(m+n)*ph);
 bin=zeros(nCon*ph,1);
 
 % Set obstacle (1:ph)
-
+%if obstacle>=4*safetymargin
+forbidden=[round((obstacle-2*safetymargin)/vL) round((obstacle+2*safetymargin)/vL)];
 for i=1:ph
     if i>=forbidden(1) && i<=forbidden(2)
     bin(i)=-laneWidth;
     Ain(i,i*2)=-1;
     end
 end
+%end
 
 % Set max turning (ph+1:2ph)
 for i=2:ph
-    bin(ph+i)=0.01;
+    bin(ph+i)=0.02;
     Ain(ph+i,ph*n+i*2-2)=1;
     Ain(ph+i,ph*n+i*2)=-1;
 end
 for i=2:ph
-    bin(2*ph+i)=0.01;
+    bin(2*ph+i)=0.02;
     Ain(2*ph+i,ph*n+i*2-2)=-1;
     Ain(2*ph+i,ph*n+i*2)=1;
 end

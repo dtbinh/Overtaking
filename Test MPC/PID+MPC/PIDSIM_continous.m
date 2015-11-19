@@ -44,30 +44,49 @@ Kd=0;
 errorSum=0;
 error=0;
 xPos=0;
-yvec=[];
-clf
-mpcInterval=5;
-for i = 1:ph
-  obstacle(i+1)=150;
 
-     if mod(i,mpcInterval) || i==1    
-        [vvec,yTemp,bound,xa]=MPCtrajectory(A,B,C,D,task,ph,obstacle(i+1),xsp,xk(:,i),q,r,1); 
+xvec(1)=0;
+clf
+mpcInterval=6;
+obstacleInterval=1000;
+M=10000;
+for i = 1:M
+    if mod(i,obstacleInterval)==0 || i==1  
+  obstacle=100
+    end
+obstacle=obstacle-xk(1,i);
+     if mod(i,mpcInterval)==0 || i==1    
+        [vTemp,yTemp,boundTemp,xaTemp]=MPCtrajectory(A,B,C,D,task,ph,obstacle,xsp,xk(:,i),q,r,1); 
        
-            if not(isempty(yvec))
-            yvec=[yvec(1:i) yTemp(i+1:end)];
+            if i>1
+                % Build spatial vectors
+            yvec=[yvec(1:i) yTemp(1:end)];
+            vvec=[vvec(1:i) vTemp(1:end)];
+            bound=[bound(1:i) boundTemp(1:end)'];
+            xa=[xa(:,1:i) xaTemp(:,1:end)];
+            
+                % Build x vector
+            xvecTemp(1)=xPos;
+            for k=2:ph
+            xvecTemp(k)=xvecTemp(k-1)+vvec(k);
+            end 
+            xvec=[xvec(1:i) xvecTemp];
+            
             else
             yvec=yTemp;    
+            vvec=vTemp;
+            bound=boundTemp';
+            xa=xaTemp;
+            for k=2:ph
+            xvec(k)=xvec(k-1)+vvec(k);
+            end
             end        
         
-        d(1)=0;
-        for k=2:ph
-            d(k)=d(k-1)+vvec(k);
-        end
         plotroad(task,ph*vE)
         hold on
-        plot(d,bound(1:ph),'b')
-        plot(d,xa(2,:),'--')
-        plot(d,yvec)
+        plot(xvec,bound,'b')
+        plot(xvec,xa(2,:),'--')
+        plot(xvec,yvec)
         n=0;
      end
 xref=[vvec(i);yvec(i)];
@@ -81,8 +100,8 @@ uk=error*Cpid.Kp+errorSum*Cpid.Ki+errorD*Cpid.Kp;
     
 xk(:,i+1)=A*xk(:,i)+B*uk;
 xPos=xPos+xk(1,i+1);
-plotcar(xPos,xk(2,i+1),'r*')
-pause(0.01);
+plotcar(xPos,xk(2,i+1),'ro')
+pause(0.001);
 
 % if xk(2,i)>2.6
 %     break;
