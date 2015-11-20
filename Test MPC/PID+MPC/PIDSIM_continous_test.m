@@ -6,6 +6,7 @@ task=struct;
 task.road=roadsegment;
 task.Ego=standardcar;  
 laneWidth=task.road.lanewidth;
+safetymargin=task.Ego.longsafetymargin;
 ph = 150; 
 q=1;
 r=1;
@@ -46,18 +47,24 @@ error=0;
 xPos=0;
 xvec(1)=0;
 clf
-mpcInterval=6;
+mpcInterval=20;
 obstacleInterval=100;
 M=1000;
+obstacleNr=0;
+
+
 for i = 1:M
+    
     if i == 1
         obstacle=100;
-    elseif mod(i,obstacleInterval)==0  
-        obstacle=i;
+    elseif obstacle<0%mod(i,obstacleInterval)==0
+        obstacle=500
+        xPos
     end
     obstacle=obstacle-xk(1,i);
+      
     if mod(i,mpcInterval)==0 || i==1    
-        [vTemp,yTemp,boundTemp,xaTemp]=MPCtrajectory(A,B,C,D,task,ph,obstacle,xsp,xk(:,i),q,r,1); 
+        [vTemp,yTemp,boundTemp,xaTemp]=MPCtrajectory(A,B,C,D,task,ph,obstacle(end),xsp,xk(:,i),q,r); 
  
          if i>1
                 % Build spatial vectors
@@ -81,14 +88,26 @@ for i = 1:M
             for k=2:ph
                 xvec(k)=xvec(k-1)+vvec(k);
             end
-         end        
-        
+         end   
+         
+         
+         
+         for k=1:ph
+              if xvec(k+i-1)>=obstacle-10*safetymargin && xvec(k+i-1)<=obstacle+10*safetymargin
+              xsp(2,k)=7.5;
+              else
+              xsp(2,k)=2.5;    
+              end
+         end
+          
+         
         plotroad(task,ph*vE)
         hold on
         plot(xvec,bound,'b')
-        plot(xvec,xa(2,:),'--')
-        plot(xvec,yvec)
-        n=0;
+        hold on
+        plot(xvec(i:end),xa(2,i:end),'--')
+        hold on
+        plot(xvec(i:end),yvec(i:end))
     end
     xref=[vvec(i);yvec(i)];
     errorD=error-(xref-xk(:,i));
@@ -99,8 +118,8 @@ for i = 1:M
     xk(:,i+1)=A*xk(:,i)+B*uk;
     xPos=xPos+xk(1,i+1);
     plotcar(xPos,xk(2,i+1),'ro')
-    pause(0.001);
-
+    pause(0.05);
+    axis([0 ph*vE 0 10])                                %Locks axis
 % if xk(2,i)>2.6
 %     break;
 % end
