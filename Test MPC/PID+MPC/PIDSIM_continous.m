@@ -57,7 +57,7 @@ for i = 1:M
     end
     obstacle=obstacle-xk(1,i);
     if mod(i,mpcInterval)==0 || i==1    
-        [vTemp,yTemp,boundTemp,xaTemp]=MPCtrajectory(A,B,C,D,task,ph,obstacle,xsp,xk(:,i),q,r,1); 
+        [vTemp,yTemp,boundTemp]=MPCtrajectory(A,B,C,D,task,ph,xsp,xk(:,i),q,r); 
  
          if i>1
                 % Build spatial vectors
