@@ -17,7 +17,7 @@ pE=0;
 
 % Leading car
 vL=60/3.6;
-obstacle=2000;
+obstacle=5000;
 
 %% Initiate system
 ds=1;                                   % delta s = 1 meter
@@ -51,14 +51,7 @@ r=100;
 vvec=ones(1,ph)*vE;
 yvec=ones(1,ph)*laneWidth/2;
 
-    plotroad(task,0,vE*M)
-    hold on
-
-for i=1:M
 %% Set Obstacle
-if mod(i,200)==0
-    obstacle=xPos+ph*xk(1,i)
-end
 
 xPosEst(1)=xPos;
 for k=1:ph
@@ -69,11 +62,10 @@ xsp=generateXsp(obstacle,xPosEst,task,ph,vE);
 
 %% Calculate MPC trajectory
 
-[vvecTemp,yvecTemp]=MPCtrajectory(A,B,C,D,task,ph,xsp,x0,q,r);
-    if i>1
-        vvec=[vvec(1:i) vvecTemp(1:end)];
-        yvec=[yvec(1:i) yvecTemp(1:end)];
-    end
+[vvec,yvec]=MPCtrajectory(A,B,C,D,task,ph,xsp,x0,q,r);
+for i=1:M
+
+
     
     xref=[vvec(i);yvec(i)];  
     
@@ -88,9 +80,10 @@ xsp=generateXsp(obstacle,xPosEst,task,ph,vE);
     xPos=xPos+xk(1,i+1);
     x0=[xk(1,i+1) xk(2,i+1)];
     
-
+    plotroad(task,-vE*ph+xPos,vE*ph+xPos)
+    hold on
     plotcar(xPos,xk(2,i),'b*')
     plot(xPosEst(1:ph),xsp(2,:),'r')
-    plot(xPosEst(1:ph),yvec(i:i+ph-1),'y')
+    plot(xPosEst(1:ph),yvec(1:ph),'y')
     pause(0.0000001)
 end

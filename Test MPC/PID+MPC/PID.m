@@ -12,7 +12,7 @@
     error=(xref-xk);
     errorSum=errorSum+error;
     Cpid=pid(Kp,Ki,Kd);
-    uk=error*Cpid.Kp+errorSum*Cpid.Ki+errorD*Cpid.Kp;      
+    uk=error*Cpid.Kp+errorSum*Cpid.Ki+errorD*Cpid.Kd;      
     xk=A*xk+B*uk;
     uk
     end
