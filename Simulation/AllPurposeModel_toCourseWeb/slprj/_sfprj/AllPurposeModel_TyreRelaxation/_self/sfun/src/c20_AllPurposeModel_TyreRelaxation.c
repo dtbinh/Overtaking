@@ -1672,10 +1672,10 @@ extern void utFree(void*);
 
 void sf_c20_AllPurposeModel_TyreRelaxation_get_check_sum(mxArray *plhs[])
 {
-  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(3418220265U);
-  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(2249215400U);
-  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(461496486U);
-  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(208644272U);
+  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(2573818043U);
+  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(1667149729U);
+  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(400932572U);
+  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(981931697U);
 }
 
 mxArray* sf_c20_AllPurposeModel_TyreRelaxation_get_post_codegen_info(void);
@@ -1982,7 +1982,7 @@ static void chart_debug_initialization(SimStruct *S, unsigned int
 
 static const char* sf_get_instance_specialization(void)
 {
-  return "d8qV91mtXTnk6rVKnjkjQC";
+  return "Ry1PGFKv4FlGo9qr0Q1IBD";
 }
 
 static void sf_opaque_initialize_c20_AllPurposeModel_TyreRelaxation(void
@@ -2132,10 +2132,10 @@ static void mdlSetWorkWidths_c20_AllPurposeModel_TyreRelaxation(SimStruct *S)
   }
 
   ssSetOptions(S,ssGetOptions(S)|SS_OPTION_WORKS_WITH_CODE_REUSE);
-  ssSetChecksum0(S,(2158939971U));
-  ssSetChecksum1(S,(1641310977U));
-  ssSetChecksum2(S,(367490955U));
-  ssSetChecksum3(S,(1679909031U));
+  ssSetChecksum0(S,(1322819483U));
+  ssSetChecksum1(S,(1276541866U));
+  ssSetChecksum2(S,(1185441415U));
+  ssSetChecksum3(S,(1198932729U));
   ssSetmdlDerivatives(S, NULL);
   ssSetExplicitFCSSCtrl(S,1);
   ssSupportsMultipleExecInstances(S,1);

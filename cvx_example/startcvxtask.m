@@ -70,25 +70,25 @@ plot(task.L.x0,task.L.y0,'b*');
 
 % plot optimal path
 plot(task.s,res.yE,'k','LineWidth',2);
-xlim([0,task.E.horizon]); ylim([0 2]*task.road.lanewidth);
-xlabel('Relative longitudinal position (m)');
-ylabel('Lateral position (m)');
+% xlim([0,task.E.horizon]); ylim([0 2]*task.road.lanewidth);
+% xlabel('Relative longitudinal position (m)');
+% ylabel('Lateral position (m)');
 
 % legend(h,'Optimal path of the ego vehicle');
 % title('Moving (TV) frame');
 
-subplot(3,1,2); hold on;
-[AX,H1,H2] =plotyy(task.s,res.vEx*3.6,task.s,res.vEy);
-set(get(AX(1),'Ylabel'),'String','Longitudinal speed (km/h)')
-set(get(AX(2),'Ylabel'),'String','Lateral speed (m/s)') 
-xlabel('Relative position of the ego vehicle (m)');
-% legend('Longitudinal speed','Lateral speed');
-xlim([0,task.s(end)]);
-
-subplot(3,1,3); hold on;
-[AX,H1,H2] =plotyy(task.s,Ax,task.s,Ay);
-set(get(AX(1),'Ylabel'),'String','Longitudinal acceleration (m/s^2)')
-set(get(AX(2),'Ylabel'),'String','Lateral acceleration (m/s^2)') 
-xlabel('Relative position of the ego vehicle (m)');
-% legend('Longitudinal speed','Lateral speed');
-xlim([0,task.s(end)]);
+% subplot(3,1,2); hold on;
+% [AX,H1,H2] =plotyy(task.s,res.vEx*3.6,task.s,res.vEy);
+% set(get(AX(1),'Ylabel'),'String','Longitudinal speed (km/h)')
+% set(get(AX(2),'Ylabel'),'String','Lateral speed (m/s)') 
+% xlabel('Relative position of the ego vehicle (m)');
+% % legend('Longitudinal speed','Lateral speed');
+% xlim([0,task.s(end)]);
+% 
+% subplot(3,1,3); hold on;
+% [AX,H1,H2] =plotyy(task.s,Ax,task.s,Ay);
+% set(get(AX(1),'Ylabel'),'String','Longitudinal acceleration (m/s^2)')
+% set(get(AX(2),'Ylabel'),'String','Lateral acceleration (m/s^2)') 
+% xlabel('Relative position of the ego vehicle (m)');
+% % legend('Longitudinal speed','Lateral speed');
+% xlim([0,task.s(end)]);
