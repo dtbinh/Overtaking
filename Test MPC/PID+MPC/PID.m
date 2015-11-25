@@ -1,7 +1,7 @@
     function [xk errorSum] = PID(A,B,xref,xk,errorSum)
     %% Parameters
     uk=[0;0];
-    Kp=0.6;
+    Kp=1;
     Ki=0;
     Kd=0;
     error=0;

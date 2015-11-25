@@ -9,7 +9,7 @@ task.Ego=standardcar;
 laneWidth=task.road.lanewidth;
 safetyMargin=task.Ego.longsafetymargin;
 ph = 150; 
-M=10000; %Simulation time
+M=500; %Simulation time
 
 % Ego vehicle
 vE=70/3.6;
@@ -52,7 +52,7 @@ r=100;
 vvec=ones(1,ph)*vE;
 yvec=ones(1,ph)*laneWidth/2;
 %% Set Obstacle
-p=0.01;
+p=0.001;
 obstacle=generateObstacle(p,M,(vE-vL),task);
 for i=1:M
 
@@ -86,6 +86,7 @@ xsp=generateXsp(obstacle,xPosEst,task,ph,vE);
     xPos=xPos+xk(1,i+1);
     x0=[xk(1,i+1) xk(2,i+1)];
     
+    
     %Plot road and obstacles
     plotroad(task,0,(vE-vL)*M)
     plot(obstacle,laneWidth/2,'r*')
@@ -93,7 +94,7 @@ xsp=generateXsp(obstacle,xPosEst,task,ph,vE);
     %plot car and trajectory
     plotcar(xPos,xk(2,i),'b*')
     plot(xPosEst(1:ph),xsp(2,:),'r')
-    plot(xPosEst(1:ph),yvec(i:i+ph-1))
+    plot(xPosEst(1:ph),yvec(i:i+ph-1),'b')
     %plot recommended overtaking distance
     plot(xPos+750,2.5,'y+')
     pause(0.0000001)
