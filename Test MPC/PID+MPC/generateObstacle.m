@@ -13,6 +13,6 @@ if isempty(obstacle)
     obstacle(ceil(2*M/3))=2*M/3*vE/2;
 end
 
-l=1:2*length(obstacle)
+
 
 end

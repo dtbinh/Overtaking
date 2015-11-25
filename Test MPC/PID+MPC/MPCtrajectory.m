@@ -1,4 +1,4 @@
-function [vvec,yvec]=MPCtrajectory(A,B,C,D,task,ph,xsp,x0,q,r)
+function [vvec,yvec]=MPCtrajectory(A,B,C,task,ph,xsp,x0)
 
 %% Parameters
 safetymargin=task.Ego.longsafetymargin;
@@ -9,7 +9,7 @@ m = size(B,2);                          % Number of inputs
 %% State/input penalty
 
 % State/input penalty
-qx_ref = [0 0;0 20];qax=10;qvy=100;qjx=100;qay=300;
+qx_ref = [0 0;0 10];qax=10;qvy=100;qjx=100;qay=3000;
 r = 1;
 
 H1 = blkdiag(kron(eye(ph),C'*qx_ref*C),kron(eye(ph),eye(m)*r));  % Extend costfunction with, same things as nikolce.
@@ -86,12 +86,12 @@ end
 
 % Set max turning (ph+1:3ph)
 for i=2:ph
-    bin(ph+i)=0.05;
+    bin(ph+i)=0.02;
     Ain(ph+i,ph*n+i*2-2)=1;
     Ain(ph+i,ph*n+i*2)=-1;
 end
 for i=2:ph
-    bin(2*ph+i)=0.05;
+    bin(2*ph+i)=0.02;
     Ain(2*ph+i,ph*n+i*2-2)=-1;
     Ain(2*ph+i,ph*n+i*2)=1;
 end
