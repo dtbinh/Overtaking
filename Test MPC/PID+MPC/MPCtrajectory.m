@@ -9,7 +9,7 @@ m = size(B,2);                          % Number of inputs
 %% State/input penalty
 
 % State/input penalty
-qx_ref = [0 0;0 10];qax=1;qvy=100000;qjx=1;qay=3000;
+qx_ref = [0 0;0 20];qax=10;qvy=100;qjx=100;qay=300;
 r = 1;
 
 H1 = blkdiag(kron(eye(ph),C'*qx_ref*C),kron(eye(ph),eye(m)*r));  % Extend costfunction with, same things as nikolce.
@@ -79,21 +79,19 @@ bin=zeros(nCon*ph,1);
 % Set constraint for obstacle
 for i=1:ph
     if xsp(2,i)~2.5;
-    bin(i)=-xsp(2,i);
+    bin(i)=-xsp(2,i);%+task.Ego.width;
     Ain(i,i*n)=-1;
     end
 end
 
-
-
 % Set max turning (ph+1:3ph)
 for i=2:ph
-    bin(ph+i)=0.02;
+    bin(ph+i)=0.05;
     Ain(ph+i,ph*n+i*2-2)=1;
     Ain(ph+i,ph*n+i*2)=-1;
 end
 for i=2:ph
-    bin(2*ph+i)=0.02;
+    bin(2*ph+i)=0.05;
     Ain(2*ph+i,ph*n+i*2-2)=-1;
     Ain(2*ph+i,ph*n+i*2)=1;
 end
