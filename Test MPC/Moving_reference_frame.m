@@ -82,11 +82,13 @@ end
 f = -[f;zeros(m*ph,1);zeros(t*ph,1)];
 
 % Equality constraints
-Aeq =[[zeros(2,n*ph);-eye((ph-1)*n) zeros((ph-1)*n,2)]+eye(ph*n) kron(eye(ph),-B) zeros(n*ph,t*ph)];
+Aeq1 =[[zeros(2,n*ph);-eye((ph-1)*n) zeros((ph-1)*n,2)]+eye(ph*n) kron(eye(ph),-B) zeros(n*ph,t*ph)];
+Aeq2 = [kron(eye(ph),[-1/(vtilde_r^2) 0]) zeros(t*ph,m*ph) ...
+    [zeros(1,ph*t);eye(t*ph-1) zeros(t*ph-1,1)]+ -1*eye(t*ph)];
 % Aeq2 =[1 zeros(1,(m+n+t)*ph-1); 0 0 1 zeros(1,(m+n+t)*ph-3); zeros(1,(m+n)*ph) 1 zeros(1,ph-1)];
-% Aeq =[Aeq1;Aeq2];
+Aeq =[Aeq1;Aeq2];
 
-beq = zeros(size(Aeq,1),1);beq(1:2)=x0;%beq(end-2:end)=[x0(1) x0(1) 0];
+beq = [zeros(ph*n,1); ones(t*ph,1)*(-2/vtilde_r)];beq(1:2)=x0;%beq(end-2:end)=[x0(1) x0(1) 0];
 
 % Inequality constraints
 ymin=ones(1,ph)*eps;
@@ -94,12 +96,10 @@ ymin(floor(ph/4*2):floor(ph/4*3))=5;
 ymax=ones(1,ph)*10;
 
 Ain1=[-kron(eye(ph),[0 1]) zeros(ph,ph*(m+t))];
-Ain2 = [kron(eye(ph),[-1/(vtilde_r^2) 0]) zeros(t*ph,m*ph) ...
-    [zeros(1,ph*t);eye(t*ph-1) zeros(t*ph-1,1)]+ -1*eye(t*ph)];
 
-Ain=[Ain1;Ain2;-1 0 1 0 zeros(1,(m+n+t)*ph-4)];
+Ain=[Ain1;-1 0 1 0 zeros(1,(m+n+t)*ph-4)];
 
-bin=[-ymin'; ones(t*ph,1)*(-2/vtilde_r);0.003];
+bin=[-ymin';0.003];
 
 
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[]);
