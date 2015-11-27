@@ -89,7 +89,7 @@ xsp=generateXsp(obstacle,xPosEst,task,ph,vE);
     
     
     %Plot road and obstacles
-    plotroad(task,0,(vE-vL)*M)
+    plotroad(task,0,(vE-vL)*M);
     plot(obstacle,laneWidth/2,'r*')
     hold on
     %plot car and trajectory

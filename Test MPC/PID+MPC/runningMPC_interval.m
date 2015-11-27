@@ -17,6 +17,7 @@ pE=0;
 my=0.25;
 g=9.81;
 minDist=10;
+overtakingLimit=1;
 
 task.Ego.longsafetymargin=task.Ego.length*1.5+vE^2/(2*my*g);
 
@@ -58,17 +59,22 @@ obstacle=generateObstacle(p,M,(vE-vL),task);
 for i=1:M
 
 
-if mod(i,mpcInterval)==0 || i==1
+if (mod(i,mpcInterval)==0 || i==1 )
+        if (vE-vL)<overtakingLimit && obstacle(1)-xPos(i)<300
+            break;
+        end
     counter=0;
 xPosEst(1)=xPos(i);
 for k=1:ph
 xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
 end
-xsp=generateXsp(obstacle,xPosEst,task,ph,vE-vL);
+xsp=generateXsp(obstacle,xPosEst,task,ph,vD);
 
 %% Calculate MPC trajectory
 
 [vvecTemp,yvecTemp,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0);
+
+
 end   
 counter=counter+1;
     xref=[vvecTemp(counter+1);yvecTemp(counter+1)];  
@@ -104,4 +110,5 @@ counter=counter+1;
     if mod(i,ceil(M/1000))==0 && simulate==0
     waitbar(i/M)
     end
+
 end
