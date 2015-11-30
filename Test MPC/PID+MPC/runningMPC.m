@@ -9,10 +9,10 @@ task.Ego=standardcar;
 laneWidth=task.road.lanewidth;
 safetyMargin=task.Ego.longsafetymargin;
 ph = 150; 
-<<<<<<< HEAD
 
-M=500; %Simulation time
->>>>>>> 792083d8af1a969c6aba393fd6a74756965d28e7
+
+M=2000; %Simulation time
+
 
 % Ego vehicle
 vE=70/3.6;

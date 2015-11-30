@@ -4,20 +4,20 @@ clc
 % y = env_pos.y.Data;
 % rotz = env_pos.rotz.Data;
 
-vx = vel.x.Data;
-vy = vel.y.Data;
-vr = vel.rotz.Data;
+% vx = vel.x.Data;
+% vy = vel.y.Data;
+% vr = vel.rotz.Data;
 
 % vx1 = driv.x.Data;
 % vy1 = driv.y.Data;
 % vr1 = driv.rotz.Data;
 
-x = pos.x.Data;
-y = pos.y.Data;
-
-ax = acc.x.Data;
-ay = acc.y.Data;
-ar = acc.rotz.Data;
+% x = pos.x.Data;
+% y = pos.y.Data;
+% 
+% ax = acc.x.Data;
+% ay = acc.y.Data;
+% ar = acc.rotz.Data;
 
 % figure(1); clf; hold on
 % plot(t, vy);
@@ -32,12 +32,16 @@ load('testPath');
 % figure(4); clf; hold on
 % plot(t, xdc);
 % 
+% figure(3); clf; hold on
+% plot(t, y);
+% plot(t, yref);
 figure(3); clf; hold on
-plot(t, y);
-plot(t, yref);
+plot((1:150)*2.8,simout')
+% figure(3); clf; hold on
+% plot(diff(y.*t));
 
-figure(3); clf; hold on
-plot(path(1, :), path(2, :));
+% figure(3); clf; hold on
+% plot(path(1, :), path(2, :));
 
 
 % Par.Init.v_x = 20;
