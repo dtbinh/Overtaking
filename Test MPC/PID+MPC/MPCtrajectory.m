@@ -1,4 +1,4 @@
-function [vvec,yvec]=MPCtrajectory(A,B,C,task,ph,xsp,x0)
+function [vvec,yvec,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0)
 
 %% Parameters
 safetymargin=task.Ego.longsafetymargin;
@@ -9,7 +9,7 @@ m = size(B,2);                          % Number of inputs
 %% State/input penalty
 
 % State/input penalty
-qx_ref = [0 0;0 10];qax=10;qvy=100;qjx=100;qay=3000;
+qx_ref = [1 0;0 10];qax=10;qvy=1000;qjx=100;qay=300;
 r = 1;
 
 H1 = blkdiag(kron(eye(ph),C'*qx_ref*C),kron(eye(ph),eye(m)*r));  % Extend costfunction with, same things as nikolce.
@@ -78,27 +78,28 @@ bin=zeros(nCon*ph,1);
 
 % Set constraint for obstacle
 for i=1:ph
-    if xsp(2,i)~2.5;
-    bin(i)=-xsp(2,i);%+task.Ego.width;
+
+    if xsp(2,i)==7.5;
+    bin(i)=-5;%xsp(2,i);%+task.Ego.width;
     Ain(i,i*n)=-1;
     end
 end
 
 % Set max turning (ph+1:3ph)
 for i=2:ph
-    bin(ph+i)=0.02;
+    bin(ph+i)=0.2;
     Ain(ph+i,ph*n+i*2-2)=1;
     Ain(ph+i,ph*n+i*2)=-1;
 end
 for i=2:ph
-    bin(2*ph+i)=0.02;
+    bin(2*ph+i)=0.2;
     Ain(2*ph+i,ph*n+i*2-2)=-1;
     Ain(2*ph+i,ph*n+i*2)=1;
 end
 
 % Set top bound (3ph+1:4ph)
 for i=1:ph
-    bin(3*ph+i)=2*laneWidth;
+    bin(3*ph+i)=2*laneWidth-task.Ego.width;
     Ain(3*ph+i,i*n)=1;
 
 end
@@ -113,6 +114,6 @@ for i = 1:ph
     vvec(i)=z(i*2-1);
     yvec(i)=z(i*2);
 end
-%bound=-bin(1:ph);
+bound=-bin(1:ph);
 
 end

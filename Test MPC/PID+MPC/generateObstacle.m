@@ -9,8 +9,8 @@ end
 end
 
 if isempty(obstacle)
-    obstacle(ceil(M/3))=M/3*vE/2;
-    obstacle(ceil(2*M/3))=2*M/3*vE/2;
+    obstacle(1)=M/3*vE/2;
+    obstacle(2)=2*M/3*vE/2;
 end
 
 

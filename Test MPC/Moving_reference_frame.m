@@ -6,6 +6,7 @@ B = [1 0;0 1];
 
 n = size(A,2);                          % Number of states
 m = size(B,2);                          % Number of inputs
+t = 1;                                  % Number of time variables
 
 C = [1 0;0 1];
 D = [0 0;0 0];
@@ -13,15 +14,18 @@ D = [0 0;0 0];
 % H = [0 1];                              % Selection matrix
 % Cz= H*C;
 
-ph = 100;                                 % Prediction horizon
+ph =100;                                 % Prediction horizon
 
-laneWidth = 2.5;                        % Lanewidth
-ysp=[ones(1,ph)*(2);ones(1,ph)*2.5];    % Setpoint for xdot and y pos.
-ysp(2,floor(ph/4*2):floor(ph/4*3))=7.5; % Obstacle refererence
+laneWidth = 2.5;                          % Lanewidth
+ysp=[ones(1,ph)*(2);ones(1,ph)*2.5];      % Setpoint for xdot and y pos.
+ysp(2,floor(ph/4*2):floor(ph/4*3))=7.5;   % Obstacle refererence
 x0=[2;2.5];                               % Initial state value
 
+%
+vtilde_r = 2;                             % relative refenrence velocity
+
 % State/input penalty
-qx_ref = 10;qax=1;qvy=300;qjx=1;qay=3000;
+qx_ref = [0 0;0 20];qax=10;qvy=200;qjx=100;qay=800;qt=1;
 r = 1;
 
 H1 = blkdiag(kron(eye(ph),C'*qx_ref*C),kron(eye(ph),eye(m)*r));  % Extend costfunction with, same things as nikolce.
@@ -65,27 +69,38 @@ for i=1:2:n*ph-5
     temp(i:i+5,i:i+5)=repBlock;
     H5=H5+temp;
 end
-H5 =qay*[H5 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
+H5 = qjx*[H5 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
 
 H=2*(H1+H2+H3+H4+H5);
+H = blkdiag(H,eye(t*ph)*0);
+H(end:end)=qt;
 f1 = 2*(C*ysp)'*qx_ref;f=[];
 
 for i=1:size(f1,1)
     f = [f;f1(i,1);f1(i,2)];
 end
-f = -[f;zeros(m*ph,1)];
+f = -[f;zeros(m*ph,1);zeros(t*ph,1)];
 
 % Equality constraints
-Aeq =[[zeros(2,n*ph);-eye((ph-1)*n) zeros((ph-1)*n,2)]+eye(ph*n) kron(eye(ph),-B)]; 
-beq = zeros(size(Aeq,1),1);beq(1:2)=x0;
+Aeq1 =[[zeros(2,n*ph);-eye((ph-1)*n) zeros((ph-1)*n,2)]+eye(ph*n) kron(eye(ph),-B) zeros(n*ph,t*ph)];
+Aeq2 = [kron(eye(ph),[-1/(vtilde_r^2) 0]) zeros(t*ph,m*ph) ...
+    [zeros(1,ph*t);eye(t*ph-1) zeros(t*ph-1,1)]+ -1*eye(t*ph)];
+% Aeq2 =[1 zeros(1,(m+n+t)*ph-1); 0 0 1 zeros(1,(m+n+t)*ph-3); zeros(1,(m+n)*ph) 1 zeros(1,ph-1)];
+Aeq =[Aeq1;Aeq2];
+
+beq = [zeros(ph*n,1); ones(t*ph,1)*(-2/vtilde_r)];beq(1:2)=x0;%beq(end-2:end)=[x0(1) x0(1) 0];
 
 % Inequality constraints
 ymin=ones(1,ph)*eps;
 ymin(floor(ph/4*2):floor(ph/4*3))=5;
 ymax=ones(1,ph)*10;
 
-Ain=[-kron(eye(ph),[0 1]) zeros(ph,ph*m)];
-bin=-ymin';
+Ain1=[-kron(eye(ph),[0 1]) zeros(ph,ph*(m+t))];
+
+Ain=[Ain1;-1 0 1 0 zeros(1,(m+n+t)*ph-4)];
+
+bin=[-ymin';0.003];
+
 
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[]);
 
