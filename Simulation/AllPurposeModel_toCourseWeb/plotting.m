@@ -31,8 +31,8 @@ clc
 % figure(5); clf; hold on;
 % plot(xsp(:, 2:2:300)');
 % 
-% figure(6); clf; hold on;
-% plot(env_pos.x.Data, env_pos.y.Data);
+figure(6); clf; hold on;
+plot(env_pos.x.Data, env_pos.y.Data);
 % 
 % figure(7); clf; hold on;
 % x = env_pos.x.Data;
@@ -50,25 +50,28 @@ clc
 % end
 
 
+
 % figure(4); clf; hold on
 xv = (1:150)*2.8;
 
 c = rand(30, 3);
 
-for k = 1:size(simout, 1)
-    
-    
-    xv = xv + 70/3.6;
-    clf; hold on;
-    plot(xv, simout(k, :), 'Color', c(k, :));
-    plot(xv, xsp(k, 2:2:300), 'Color', c(k, :));
-    pause
+% for k = 1:size(simout, 1)
+%     
+%     
+% %     xv = xv + 70/3.6;
+%     clf; hold on;
+%     plot(xv, simout(k, :), 'Color', c(k, :));
+%     plot(xv, xsp(k, 2:2:300), 'Color', c(k, :));
+%     plot([0, 20], [y_sampled(k), y_sampled(k)], 'r');
+%     plot(xv(10), simout(k, 10), 'ro')
+%     pause
 %     if k == 1
 %         plot((1:150)*2.8, xsp(k, 2:2:300), 'r');
 %     else
 %         plot((1:150)*2.8, xsp(k, 2:2:300));
 %     end
     
-end
+% end
 
 
