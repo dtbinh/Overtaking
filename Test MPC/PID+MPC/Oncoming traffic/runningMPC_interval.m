@@ -54,26 +54,23 @@ vvecTemp=ones(1,ph)*(vE-vL);
 yvecTemp=ones(1,ph)*laneWidth/2;
 
 %% Set Obstacle
-p=0.02;
-obstacle=generateObstacle(p,M,(vE-vL),task);
+p1=0.02;
+p2=0.01;
+obstacle=generateObstacle(p1,M,(vE-vL),task);
+oncoming=generateOncoming(p2,M,(vE-vL),task);
 for i=1:M
 
-
 if (mod(i,mpcInterval)==0 || i==1 )
-        if (vE-vL)<overtakingLimit && obstacle(1)-xPos(i)<300
-            break;
-        end
-    counter=0;
+counter=0;
 xPosEst(1)=xPos(i);
 for k=1:ph
 xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
 end
-xsp=generateXsp(obstacle,xPosEst,task,ph,vD);
+xsp=generateXsp(obstacle,oncoming,xPosEst,task,ph,vD);
 
 %% Calculate MPC trajectory
 
 [vvecTemp,yvecTemp,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0);
-
 
 end   
 counter=counter+1;
@@ -100,7 +97,7 @@ counter=counter+1;
     %plot car and trajectory
     plotcar(xPos(i+1),xk(2,i+1),'b*')
     %plot(xPos,yvec(1:i+1),'b')
-    plot(xPosEst(2:end),xsp(2,:),'r--')
+    plot(xPosEst(1:ph),xsp(2,:),'r--')
     plot(xPosEst(1:ph),yvecTemp,'b')
     plot(xPosEst(1:ph),bound,'k')
     % plot normal overtaking distance

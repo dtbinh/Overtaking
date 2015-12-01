@@ -1,4 +1,4 @@
-function xsp=generateXsp(obstacle,xPos,task,ph,vD)
+function xsp=generateXsp(obstacle,oncoming,xPos,task,ph,vD)
 laneWidth=task.road.lanewidth;
 safetyMargin=task.Ego.longsafetymargin;
 minDist=safetyMargin;
@@ -14,5 +14,10 @@ for k=1:length(obstacle)
         
     end
 end
+
+    if xsp(2,1)==3*laneWidth/2 && xsp(2,ceil(1+minDist))==3*laneWidth/2 
+        
+        xsp(2,1:ceil(1+minDist))=3*laneWidth/2;
+    end
 
 end
