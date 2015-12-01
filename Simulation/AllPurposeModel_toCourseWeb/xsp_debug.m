@@ -1,5 +1,5 @@
 clc, clear
-relPos = -10;
+relPos = 30;
 
 vD = 2.8;  % relative velocity
 
@@ -10,8 +10,8 @@ safetyMargin = 20; % task.Ego.longsafetymargin;
 
 xsp(2,:) = ones(1,ph)*laneWidth/2;
 xsp(1,:) = ones(1,ph)*vD;
-% xRel = (ph:-1:1)*vD - relPos;
-xRel = (-ph/2:ph/2)*vD - relPos*vD;
+xRel = (1:ph)*vD - relPos*vD;
+% xRel = (-ph/2:ph/2)*vD - relPos*vD;
 
 % xsp(2, ) = 3*laneWidth/2;
 for i=1:ph

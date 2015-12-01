@@ -6,14 +6,14 @@ vD = 2.8;  % relative velocity
 ph = 150;
 
 laneWidth = 5; % task.road.lanewidth;
-safetyMargin = 20; % task.Ego.longsafetymargin;
+safetyMargin = 5; % task.Ego.longsafetymargin;
 
 xsp(2,:) = ones(1,ph)*laneWidth/2;
 xsp(1,:) = ones(1,ph)*vD;
 % xRel = (ph:-1:1)*vD - relPos;
 % xRel = (1:ph)*vD - relPos*vD;
-xRel = (-ph/2:ph/2)*vD - relPos;
-
+% xRel = (-ph/2:ph/2)*vD - relPos*vD;
+xRel = (1:ph)/vD - relPos/vD;
 
 for i=1:ph
 

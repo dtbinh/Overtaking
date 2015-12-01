@@ -82,7 +82,8 @@ beq(1:2)=x0;
 
 % Inequality constraints
 ymin=ones(1,ph)*eps;ymin(100:120)=4;
-ymax=ones(1,ph)*laneWidth*2;
+% ymax=ones(1,ph)*laneWidth*2;
+ymax=ones(1,ph)*20;
 
 nCon=4;
 Ain=zeros(nCon*ph,(m+n)*ph);
@@ -116,6 +117,7 @@ for i=1:ph
 end
 
 options = optimset('Algorithm','interior-point-convex','Display','off');
+% options = optimset('Algorithm','interior-point-convex');
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[],[],options);
 if isempty(z)
     disp('Problem Infeasible');
@@ -126,6 +128,7 @@ end
 %     y=z(2);
 % end
 y = z(2:2:300);
+% y = z(2);
 
 
 end

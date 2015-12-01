@@ -22,27 +22,53 @@ clc
 % figure(1); clf; hold on
 % plot(t, vy);
 
-load('testPath');
 
-% figure(2); clf; hold on
-% plot(x, y);
-% plot(path(1, :), path(2, :)-2.5)
-% axis equal
+
+% figure(3); clf; hold on
+% plot(t, env_pos.y.Data);
+% plot(t, yref);
+% 
+% figure(5); clf; hold on;
+% plot(xsp(:, 2:2:300)');
+% 
+% figure(6); clf; hold on;
+% plot(env_pos.x.Data, env_pos.y.Data);
+% 
+% figure(7); clf; hold on;
+% x = env_pos.x.Data;
+% y = env_pos.y.Data;
+% for k = 1:length(t)
+%     
+%     clf; hold on;
+%     
+%     plot(x, y);
+%     plot(x(k), y(k), 'o');
+%     plot(fcar(k), 2.5, 'o');
+%     
+%     pause(0.01);
+%     
+% end
+
 
 % figure(4); clf; hold on
-% plot(t, xdc);
-% 
-% figure(3); clf; hold on
-% plot(t, y);
-% plot(t, yref);
-figure(3); clf; hold on
-plot((1:150)*2.8,simout')
-% figure(3); clf; hold on
-% plot(diff(y.*t));
+xv = (1:150)*2.8;
 
-% figure(3); clf; hold on
-% plot(path(1, :), path(2, :));
+c = rand(30, 3);
 
+for k = 1:size(simout, 1)
+    
+    
+    xv = xv + 70/3.6;
+    clf; hold on;
+    plot(xv, simout(k, :), 'Color', c(k, :));
+    plot(xv, xsp(k, 2:2:300), 'Color', c(k, :));
+    pause
+%     if k == 1
+%         plot((1:150)*2.8, xsp(k, 2:2:300), 'r');
+%     else
+%         plot((1:150)*2.8, xsp(k, 2:2:300));
+%     end
+    
+end
 
-% Par.Init.v_x = 20;
 
