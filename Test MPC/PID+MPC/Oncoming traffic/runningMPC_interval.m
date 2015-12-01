@@ -60,13 +60,16 @@ obstacle=generateObstacle(p1,M,(vE-vL),task);
 oncoming=generateOncoming(p2,M,(vE-vL),task);
 for i=1:M
 
-if (mod(i,mpcInterval)==0 || i==1 )
+
+    
+if (mod(i,mpcInterval)==0 || i==1 ) 
 counter=0;
 xPosEst(1)=xPos(i);
 for k=1:ph
 xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
 end
-xsp=generateXsp(obstacle,oncoming,xPosEst,task,ph,vD);
+
+xsp=generateXsp(obstacle,xPosEst,task,ph,vD);
 
 %% Calculate MPC trajectory
 
@@ -99,7 +102,8 @@ counter=counter+1;
     %plot(xPos,yvec(1:i+1),'b')
     plot(xPosEst(1:ph),xsp(2,:),'r--')
     plot(xPosEst(1:ph),yvecTemp,'b')
-    plot(xPosEst(1:ph),bound,'k')
+    plot(xPosEst(1:ph),bound(:,1),'k')
+    plot(xPosEst(1:ph),bound(:,2),'k')
     % plot normal overtaking distance
     plot(xPos(i+1)+750/(vE-vL),2.5,'y+')
     pause(0.0000001)

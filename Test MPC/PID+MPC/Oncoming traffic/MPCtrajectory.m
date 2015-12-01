@@ -82,19 +82,20 @@ for i=1:ph
     if xsp(2,i)==7.5;
     bin(i)=-5-task.Ego.width/2;%xsp(2,i);%+task.Ego.width;
     Ain(i,i*n)=-1;
+    else
+    bin(i)=-task.Ego.width/2; 
+    Ain(i,i*n)=-1;
     end
 end
 
 % Set constraint for oncoming vehicle
 
-% for i=1:ph
-% 
-%     if xsp(2,i)==2.5;
-%     bin(i)=-5;%xsp(2,i);%+task.Ego.width;
-%     Ain(i,i*n)=-1;
-%     end
-% end
-% Set max turning (ph+1:3ph)
+for i=1:ph
+
+    bin(ph+i)=2*laneWidth-task.Ego.width/2;
+    Ain(ph+i,i*n)=1;
+end
+%Set max turning (ph+1:3ph)
 for i=2:ph
     bin(2*ph+i)=0.2;
     Ain(2*ph+i,ph*n+i*2-2)=1;
@@ -106,12 +107,12 @@ for i=2:ph
     Ain(3*ph+i,ph*n+i*2)=1;
 end
 
-% Set top bound (3ph+1:4ph)
-for i=1:ph
-    bin(4*ph+i)=2*laneWidth+task.Ego.width/2;
-    Ain(4*ph+i,i*n)=1;
-
-end
+% % Set top bound (3ph+1:4ph)
+% for i=1:ph
+%     bin(4*ph+i)=2*laneWidth-task.Ego.width/2;
+%     Ain(4*ph+i,i*n)=1;
+% 
+% end
 
 options = optimset('Algorithm','interior-point-convex','Display','off');
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[],[],options);
@@ -123,6 +124,6 @@ for i = 1:ph
     vvec(i)=z(i*2-1);
     yvec(i)=z(i*2);
 end
-bound=-bin(1:ph);
+bound=[-bin(1:ph),bin(ph+1:2*ph)];
 
 end

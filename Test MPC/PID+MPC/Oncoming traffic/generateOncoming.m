@@ -9,10 +9,6 @@ end
 end
 
 if isempty(oncoming)
-    oncoming(1)=M/3*vE/2;
-    oncoming(2)=2*M/3*vE/2;
+    oncoming(1)=M*vE/2;
 end
-
-
-
 end
