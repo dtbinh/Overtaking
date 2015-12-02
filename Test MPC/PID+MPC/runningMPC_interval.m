@@ -12,7 +12,8 @@ ph = 150;
 M=2000; %Simulation time
 simulate = 1; %simulate in real time
 % Ego vehicle
-vE=70/3.6;
+vEo=63/3.6;
+vE=vEo;
 pE=0;
 my=0.25;
 g=9.81;
@@ -24,6 +25,7 @@ task.Ego.longsafetymargin=task.Ego.length*1.5+vE^2/(2*my*g);
 % Leading car
 vL=60/3.6;
 vD=vE-vL;
+
 %% Initiate system
 ds=1;                                   % delta s = 1 meter
 A = [0 0;0 0];
@@ -46,7 +48,7 @@ errorSum=0;
 
 
 %% Set MPC parameters
-mpcInterval=30;
+mpcInterval=12;
 q=1;
 r=100;
 vvecTemp=ones(1,ph)*(vE-vL);
@@ -54,16 +56,18 @@ vvecTemp=ones(1,ph)*(vE-vL);
 yvecTemp=ones(1,ph)*laneWidth/2;
 
 %% Set Obstacle
-p=0.02;
-obstacle=generateObstacle(p,M,(vE-vL),task);
+p=0.01;
+obstacle=generateObstacle(p,M,vE,task);
+
 for i=1:M
 
-
+    
 if (mod(i,mpcInterval)==0 || i==1 )
-        if (vE-vL)<overtakingLimit && obstacle(1)-xPos(i)<300
-            break;
-        end
-    counter=0;
+   
+vE=getVD(vE,vL,vEo,obstacle,xPos(i),xk(2,i));
+vD=vE-vL; 
+   
+counter=0;
 xPosEst(1)=xPos(i);
 for k=1:ph
 xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
@@ -90,11 +94,12 @@ counter=counter+1;
     xPos(i+1)=xPos(i)+xk(1,i+1);
     x0=[xk(1,i+1) xk(2,i+1)];
     
-    if simulate==1
-        figure(1)
-        clf
+    if simulate==1 && sum(vvecTemp)>10
+    figure(1)
+    clf
     %Plot road and obstacles
-    plotroad(task,i*vD-2*ph,i*vD+2*ph)
+    %plotroad(task,i*vD-2*ph,i*vD+2*ph)
+    plotroad(task,xPos(i)-2*ph,xPos(i)+2*ph)
     plot(obstacle,laneWidth/2,'r*')
     hold on
     %plot car and trajectory
