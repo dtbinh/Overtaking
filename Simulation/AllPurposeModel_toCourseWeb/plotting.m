@@ -4,9 +4,9 @@ clc
 % y = env_pos.y.Data;
 % rotz = env_pos.rotz.Data;
 
-% vx = vel.x.Data;
-% vy = vel.y.Data;
-% vr = vel.rotz.Data;
+vx = vel.x.Data;
+vy = vel.y.Data;
+vr = vel.rotz.Data;
 
 % vx1 = driv.x.Data;
 % vy1 = driv.y.Data;
@@ -19,35 +19,18 @@ y = pos.y.Data;
 % ay = acc.y.Data;
 % ar = acc.rotz.Data;
 
-% figure(1); clf; hold on
-% plot(t, vy);
+figure(1); clf; hold on
+plot(t, vx);
 
+% figure(3); clf; hold on
+% plot(t, env_pos.y.Data);
+% plot(t, yref);
 
-
-figure(3); clf; hold on
-plot(t, env_pos.y.Data);
-plot(t, yref);
-% 
-% figure(5); clf; hold on;
-% plot(xsp(:, 2:2:300)');
-% 
 % figure(6); clf; hold on;
 % plot(env_pos.x.Data, env_pos.y.Data);
-% 
-% figure(7); clf; hold on;
-% x = env_pos.x.Data;
-% y = env_pos.y.Data;
-% for k = 1:length(t)
-%     
-%     clf; hold on;
-%     
-%     plot(x, y);
-%     plot(x(k), y(k), 'o');
-%     plot(fcar(k), 2.5, 'o');
-%     
-%     pause(0.01);
-%     
-% end
+
+
+
 
 
 

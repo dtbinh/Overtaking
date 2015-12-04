@@ -96,3 +96,7 @@ Par.Drvr.v_set=20;
 Par.Init.v_x=20;
 Par.Init.F_fz=Par.Veh.m*9.80665*(-Par.Veh.lr/Par.Veh.L);
 Par.Init.F_rz=Par.Veh.m*9.80665*(+Par.Veh.lf/Par.Veh.L);
+
+y0 = 2.5;
+tp = 1; % MPC trigger period
+tip = tp/10;    %Interpolator trigger period
