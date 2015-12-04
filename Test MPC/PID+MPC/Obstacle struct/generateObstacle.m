@@ -31,8 +31,9 @@ if length(obstacle)<2
 end
 for u=1:length(obstacle)-1
     if (obstacle{u+1}.position-obstacle{u+1}.longsafetymarginB)-(obstacle{u}.position+obstacle{u}.longsafetymarginF)<2*task.Ego.overtakingLength
-        obstacle{u}.longsafetymarginF=task.Ego.overtakingLength;
-        obstacle{u+1}.longsafetymarginB=task.Ego.overtakingLength;
+        %obstacle{u}.longsafetymarginF=obstacle{u}.longsafetymarginF+task.Ego.overtakingLength;
+        %obstacle{u+1}.longsafetymarginB=obstacle{u+1}.longsafetymarginF+task.Ego.overtakingLength;
+        obstacle{u}.longsafetymarginF=obstacle{u+1}.position-obstacle{u}.position-obstacle{u+1}.longsafetymarginB;
     end
 end
 
