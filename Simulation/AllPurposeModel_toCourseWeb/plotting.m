@@ -12,8 +12,8 @@ clc
 % vy1 = driv.y.Data;
 % vr1 = driv.rotz.Data;
 
-% x = pos.x.Data;
-% y = pos.y.Data;
+x = pos.x.Data;
+y = pos.y.Data;
 % 
 % ax = acc.x.Data;
 % ay = acc.y.Data;
@@ -24,15 +24,15 @@ clc
 
 
 
-% figure(3); clf; hold on
-% plot(t, env_pos.y.Data);
-% plot(t, yref);
+figure(3); clf; hold on
+plot(t, env_pos.y.Data);
+plot(t, yref);
 % 
 % figure(5); clf; hold on;
 % plot(xsp(:, 2:2:300)');
 % 
-figure(6); clf; hold on;
-plot(env_pos.x.Data, env_pos.y.Data);
+% figure(6); clf; hold on;
+% plot(env_pos.x.Data, env_pos.y.Data);
 % 
 % figure(7); clf; hold on;
 % x = env_pos.x.Data;
