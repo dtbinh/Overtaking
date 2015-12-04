@@ -24,9 +24,10 @@ v.Daxmin=-15;               %[m/s3] minimum longitudinal jerk
 v.Daxmax=7.5;               %[m/s3] maximum longitudinal jerk
 v.Daymin=-2.5;              %[m/s3] minimum lateral jerk
 v.Daymax=2.5;               %[m/s3] maximum lateral jerk
+v.velocity=70/3.6;
 
 v.maxslipangle=10*pi/180;   %[rad] max slip angle
-v.horizon=2;              %[m] receeding horizon
+v.horizon=100;              %[m] receeding horizon
 
 
 

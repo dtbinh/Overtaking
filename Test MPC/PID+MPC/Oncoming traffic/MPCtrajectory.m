@@ -1,4 +1,4 @@
-function [vvec,yvec,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0,ds,init)
+function [vvec,yvec,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0)
 
 %% Parameters
 safetymargin=task.Ego.longsafetymargin;
@@ -18,13 +18,13 @@ H1 = blkdiag(kron(eye(ph),C'*qx_ref*C),kron(eye(ph),eye(m)*r));  % Extend costfu
 H2 = [kron(eye(ph),[1 0;0 0]) + [zeros(2,ph*n);kron(eye(ph-1),[-1 0;0 0]) zeros((ph-1)*n,2)] + ...
     [zeros((ph-1)*n,2) kron(eye(ph-1),[-1 0;0 0]);zeros(2,ph*n)] + [zeros(2,ph*n);zeros((ph-2)*n,2)...
     kron(eye(ph-2),[1 0;0 0]) zeros((ph-2)*n,2);zeros(2,ph*n)]];
-H2 =qax*[H2 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))]/ds^2;
+H2 =qax*[H2 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
 
 % Costfunction for y velocity 
 H3 = [kron(eye(ph),[0 0;0 1]) + [zeros(2,ph*n);kron(eye(ph-1),[0 0;0 -1]) zeros((ph-1)*n,2)] + ...
     [zeros((ph-1)*n,2) kron(eye(ph-1),[0 0;0 -1]);zeros(2,ph*n)] + [zeros(2,ph*n);zeros((ph-2)*n,2)...
     kron(eye(ph-2),[0 0;0 1]) zeros((ph-2)*n,2);zeros(2,ph*n)]];
-H3 =qvy*[H3 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))]/ds^2;
+H3 =qvy*[H3 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
 
 % Costfunction for y acceleration
 H4 = zeros(ph*n,ph*n);
@@ -39,7 +39,7 @@ for i=1:2:n*ph-5
     H4=H4+temp;
 end
 
-H4 =qay*[H4 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))]/ds^2;
+H4 =qay*[H4 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
 
 % Costfunction for x jerk
 H5 = zeros(ph*n,ph*n);
@@ -53,7 +53,7 @@ for i=1:2:n*ph-5
     temp(i:i+5,i:i+5)=repBlock;
     H5=H5+temp;
 end
-H5 =qjx*[H5 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))]/ds^2;
+H5 =qjx*[H5 zeros(ph*n,ph*m);zeros(ph*m,ph*(n+m))];
 
 H=2*(H1+H2+H3+H4+H5);
 f1 = 2*(C*xsp)'*qx_ref;f=[];
@@ -80,29 +80,39 @@ bin=zeros(nCon*ph,1);
 for i=1:ph
 
     if xsp(2,i)==7.5;
-    bin(i)=-5;%xsp(2,i);%+task.Ego.width;
+    bin(i)=-5-task.Ego.width/2;%xsp(2,i);%+task.Ego.width;
+    Ain(i,i*n)=-1;
+    else
+    bin(i)=-task.Ego.width/2; 
     Ain(i,i*n)=-1;
     end
 end
 
-% Set max turning (ph+1:3ph)
-for i=2:ph
-    bin(ph+i)=0.2;
-    Ain(ph+i,ph*n+i*2-2)=1;
-    Ain(ph+i,ph*n+i*2)=-1;
+% Set constraint for oncoming vehicle
+
+for i=1:ph
+
+    bin(ph+i)=2*laneWidth-task.Ego.width/2;
+    Ain(ph+i,i*n)=1;
 end
+%Set max turning (ph+1:3ph)
 for i=2:ph
     bin(2*ph+i)=0.2;
-    Ain(2*ph+i,ph*n+i*2-2)=-1;
-    Ain(2*ph+i,ph*n+i*2)=1;
+    Ain(2*ph+i,ph*n+i*2-2)=1;
+    Ain(2*ph+i,ph*n+i*2)=-1;
+end
+for i=2:ph
+    bin(3*ph+i)=0.2;
+    Ain(3*ph+i,ph*n+i*2-2)=-1;
+    Ain(3*ph+i,ph*n+i*2)=1;
 end
 
-% Set top bound (3ph+1:4ph)
-for i=1:ph
-    bin(3*ph+i)=2*laneWidth-task.Ego.width;
-    Ain(3*ph+i,i*n)=1;
-
-end
+% % Set top bound (3ph+1:4ph)
+% for i=1:ph
+%     bin(4*ph+i)=2*laneWidth-task.Ego.width/2;
+%     Ain(4*ph+i,i*n)=1;
+% 
+% end
 
 options = optimset('Algorithm','interior-point-convex','Display','off');
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[],[],options);
@@ -114,6 +124,6 @@ for i = 1:ph
     vvec(i)=z(i*2-1);
     yvec(i)=z(i*2);
 end
-bound=-bin(1:ph);
+bound=[-bin(1:ph),bin(ph+1:2*ph)];
 
 end

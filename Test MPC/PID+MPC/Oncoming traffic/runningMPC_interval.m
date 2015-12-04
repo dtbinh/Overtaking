@@ -12,8 +12,7 @@ ph = 150;
 M=2000; %Simulation time
 simulate = 1; %simulate in real time
 % Ego vehicle
-vEo=63/3.6;
-vE=vEo;
+vE=70/3.6;
 pE=0;
 my=0.25;
 g=9.81;
@@ -25,7 +24,6 @@ task.Ego.longsafetymargin=task.Ego.length*1.5+vE^2/(2*my*g);
 % Leading car
 vL=60/3.6;
 vD=vE-vL;
-
 %% Initiate system
 ds=1;                                   % delta s = 1 meter
 A = [0 0;0 0];
@@ -48,7 +46,7 @@ errorSum=0;
 
 
 %% Set MPC parameters
-mpcInterval=12;
+mpcInterval=30;
 q=1;
 r=100;
 vvecTemp=ones(1,ph)*(vE-vL);
@@ -56,28 +54,26 @@ vvecTemp=ones(1,ph)*(vE-vL);
 yvecTemp=ones(1,ph)*laneWidth/2;
 
 %% Set Obstacle
-p=0.01;
-obstacle=generateObstacle(p,M,vE,task);
-
+p1=0.02;
+p2=0.01;
+obstacle=generateObstacle(p1,M,(vE-vL),task);
+oncoming=generateOncoming(p2,M,(vE-vL),task);
 for i=1:M
 
+
     
-if (mod(i,mpcInterval)==0 || i==1 )
-   
-vE=getVD(vE,vL,vEo,obstacle,xPos(i),xk(2,i));
-vD=vE-vL; 
-   
+if (mod(i,mpcInterval)==0 || i==1 ) 
 counter=0;
 xPosEst(1)=xPos(i);
 for k=1:ph
 xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
 end
+
 xsp=generateXsp(obstacle,xPosEst,task,ph,vD);
 
 %% Calculate MPC trajectory
 
 [vvecTemp,yvecTemp,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0);
-
 
 end   
 counter=counter+1;
@@ -94,20 +90,20 @@ counter=counter+1;
     xPos(i+1)=xPos(i)+xk(1,i+1);
     x0=[xk(1,i+1) xk(2,i+1)];
     
-    if simulate==1 && sum(vvecTemp)>10
-    figure(1)
-    clf
+    if simulate==1
+        figure(1)
+        clf
     %Plot road and obstacles
-    %plotroad(task,i*vD-2*ph,i*vD+2*ph)
-    plotroad(task,xPos(i)-2*ph,xPos(i)+2*ph)
+    plotroad(task,i*vD-2*ph,i*vD+2*ph)
     plot(obstacle,laneWidth/2,'r*')
     hold on
     %plot car and trajectory
     plotcar(xPos(i+1),xk(2,i+1),'b*')
     %plot(xPos,yvec(1:i+1),'b')
-    plot(xPosEst(2:end),xsp(2,:),'r--')
+    plot(xPosEst(1:ph),xsp(2,:),'r--')
     plot(xPosEst(1:ph),yvecTemp,'b')
-    plot(xPosEst(1:ph),bound,'k')
+    plot(xPosEst(1:ph),bound(:,1),'k')
+    plot(xPosEst(1:ph),bound(:,2),'k')
     % plot normal overtaking distance
     plot(xPos(i+1)+750/(vE-vL),2.5,'y+')
     pause(0.0000001)
