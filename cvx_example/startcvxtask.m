@@ -42,7 +42,7 @@ end
 init;
 
 %% solve concex problem
-tic
+% tic
 res=cvxsolveprob(task); % keep results in structure res
 Ax=diff(res.vEx)./diff(res.t); Ax=[Ax; Ax(end)];
 Ay=diff(res.vEy)./diff(res.t); Ay=[Ay; Ay(end)];
@@ -52,7 +52,7 @@ fprintf('%s: cost=%1.4f, vx~[%1.0f, %1.0f]km/h, ax~[%1.1f, %1.1f]m/s2, vy~[%1.1f
 
 task.res=res;
 save task.mat task;
-toc
+% toc
 % some plots
 %% Plot results in the moving (TV) frame
 f=figure; 

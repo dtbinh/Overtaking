@@ -8,8 +8,8 @@ task.Ego=standardcar;
 laneWidth=task.road.lanewidth;
 safetyMargin=task.Ego.longsafetymargin;
 ph = task.Ego.horizon; 
-simTime = 20000; %Simulation time
-simulate = 1; 
+simTime = 200; %Simulation time
+simulate = 0; 
 
 task.Ego.velocity=70/3.6;
 

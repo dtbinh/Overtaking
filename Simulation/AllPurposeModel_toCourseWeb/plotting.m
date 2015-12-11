@@ -3,7 +3,10 @@ clc
 % x = env_pos.x.Data;
 % y = env_pos.y.Data;
 % rotz = env_pos.rotz.Data;
-
+% 
+% ax = acc.x.Data;
+% ay = acc.y.Data;
+% ar = acc.rotz.Data;
 vx = vel.x.Data;
 vy = vel.y.Data;
 vr = vel.rotz.Data;
@@ -14,47 +17,34 @@ vr = vel.rotz.Data;
 
 x = pos.x.Data;
 y = pos.y.Data;
-% 
-% ax = acc.x.Data;
-% ay = acc.y.Data;
-% ar = acc.rotz.Data;
 
 figure(1); clf; hold on
-plot(t, vx);
+subplot(2, 1, 1); hold on
+plot([x(1), x(2600)], [2.5, 2.5], '--');
+plot(x(1:2600), y(1:2600));
+legend('Lane center', 'Vehicle trajectory');
+xlabel('Absolute longitudinal position [m]');
+ylabel('Absolute lateral position [m]');
+title('Absolute position of vehicle in global xy coordinate system');
+axis([70, 589.3, 1.5, 12]);
 
+subplot(2, 1, 2); hold on;
 % figure(3); clf; hold on
-% plot(t, env_pos.y.Data);
-% plot(t, yref);
+plot(t(270:2600), env_pos.y.Data(270:2600));
+plot(t(270:2600), yref(270:2600));
+xlabel('Time [s]');
+ylabel('Absolute lateral position [m]');
+title('Absolute lateral position of vehicle over time');
+legend('Output', 'Reference')
+axis([2.145, 22.56, 1.5, 12]);
 
-% figure(6); clf; hold on;
-% plot(env_pos.x.Data, env_pos.y.Data);
-
-
-
-
-
-
-% figure(4); clf; hold on
-xv = (1:150)*2.8;
-
-c = rand(30, 3);
-
-% for k = 1:size(simout, 1)
-%     
-%     
-% %     xv = xv + 70/3.6;
-%     clf; hold on;
-%     plot(xv, simout(k, :), 'Color', c(k, :));
-%     plot(xv, xsp(k, 2:2:300), 'Color', c(k, :));
-%     plot([0, 20], [y_sampled(k), y_sampled(k)], 'r');
-%     plot(xv(10), simout(k, 10), 'ro')
-%     pause
-%     if k == 1
-%         plot((1:150)*2.8, xsp(k, 2:2:300), 'r');
-%     else
-%         plot((1:150)*2.8, xsp(k, 2:2:300));
-%     end
-%     
-% end
-
-
+figure(4); clf; hold on
+for k = 1:57
+    
+    plot3(1:150, k*ones(1, 150), simout(k, :)');
+    
+end
+xlabel('Trajectory sample');
+ylabel('MPC iteration');
+zlabel('MPC output trajectory');
+title('');

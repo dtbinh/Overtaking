@@ -8,6 +8,8 @@ x = env_pos.x.Data;
 y = env_pos.y.Data;
 r = env_pos.rotz.Data;
 h.Position = [1, 686, 1415, 119];
+dt = diff(t);
+
 for k = 1:(length(t)-101)
     
     clf; hold on;
@@ -17,9 +19,10 @@ for k = 1:(length(t)-101)
     
     plot(x(k:(k+300)), y(k:(k+300)));
     plot(x(k:(k+300)), yref(k:(k+300)));
-%     plot(x(k), y(k), 'o');
-%     plot(fcar(k), 2.5, 'o');
-    axis([x(k)-10, x(k)+100, 0, 10]);
-    pause(0.001);
+    axis([x(k)-10, x(k)+100, 0, 11.5]);
+%     pause(0.001);
+    pause(dt(k));
     
 end
+
+
