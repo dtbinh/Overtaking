@@ -43,7 +43,7 @@ beq(1:2)=x0;
 ymin=ones(1,ph)*eps;ymin(100:120)=4;
 ymax=ones(1,ph)*laneWidth*2;
 
-nCon=4; % Number of constraints
+nCon=5; % Number of constraints
 Ain=zeros(nCon*ph,(m+n)*ph);
 bin=zeros(nCon*ph,1);
 
@@ -72,6 +72,15 @@ for i=2:ph
     Ain(3*ph+i,ph*n+i*2-2)=-1;
     Ain(3*ph+i,ph*n+i*2)=1;
 end
+% %Set max velocity
+% for i=1:ph
+%     bin(4*ph+i)=3;
+%     Ain(4*ph+i,n*i-1)=1;
+% end
+% for i=1:ph
+%     bin(5*ph+i)=-task.obstacle{1}.velocity;
+%     Ain(5*ph+i,n*i-1)=-1;
+% end
 
 options = optimset('Algorithm','interior-point-convex','Display','off');
 z=quadprog(H,f,Ain,bin,Aeq,beq,[],[],[],options);

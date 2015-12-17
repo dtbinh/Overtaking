@@ -10,10 +10,10 @@ safetyMargin=task.Ego.longsafetymargin;
 task.Ego.horizon=300;
 ph = task.Ego.horizon;
 % Simulation
-simTime = 2000; %Simulation time
+simTime = 20000; %Simulation time
 askInput=0;
 simulate = 1;
-noOfLanes = 2; %2 or 3
+noOfLanes = 3; %2 or 3
 % Set profile, 'help setProfile' for more details
 profile='N';
 
@@ -58,21 +58,16 @@ xref=[];
 xk(:,1)=x0;
 xPos=zeros(simTime,1);
 errorSum=0;
-
-%% Set MPC parameters
-mpcInterval=30;
-vvecTemp=ones(1,ph)*(task.Ego.velocity-task.obstacle.velocity);
-
-[H,Aeq,beq]=mpcInit(A,B,C,ph,task,ds);
-yvecTemp=ones(1,ph)*laneWidth/2;
-
-
-
 %% Set Obstacle
 p1=0.008;
 p2=0.01;
 task.obstacle=generateObstacle(p1,simTime,task,noOfLanes,1);
+%% Set MPC parameters
+mpcInterval=30;
+vvecTemp=ones(1,ph)*(task.Ego.velocity-task.obstacle{1}.velocity);
 
+[H,Aeq,beq]=mpcInit(A,B,C,ph,task,ds);
+yvecTemp=ones(1,ph)*laneWidth/2;
 %% Main loop
 H=sparse(H);
 Aeq=sparse(Aeq);

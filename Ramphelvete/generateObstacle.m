@@ -62,7 +62,7 @@ elseif nargin==5
     obstacle{2}=standardObstacle;
     obstacle{2}.position=-200; 
     obstacle{2}.yPosition=7.5;
-    obstacle{2}.velocity=task.Ego.velocity+4;
+    obstacle{2}.velocity=task.Ego.velocity+2;
     
 end
 

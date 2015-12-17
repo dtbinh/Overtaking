@@ -56,7 +56,6 @@ x0=[task.Ego.velocity-task.obstacle.velocity laneWidth/2];
 %% Set PID parameters
 xref=[];
 xk(:,1)=x0;
-xPos=zeros(simTime,1);
 errorSum=0;
 
 %% Set MPC parameters
@@ -82,7 +81,7 @@ for i=1:simTime
     tic
     if (mod(i,mpcInterval)==0 || i==1 )
         counter=0;
-        xPosEst(1)=xPos(i);
+        xPosEst(1)=task.Ego.position;
         for k=1:ph
             xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
         end
@@ -94,18 +93,18 @@ for i=1:simTime
     end
     counter=counter+1;
     xref=[vvecTemp(counter+1);yvecTemp(counter+1)];
-    [xk(:,i+1),errorSum] = PID(A,B,xref,xk(:,i),errorSum);
-    xPos(i+1)=xPos(i)+xk(1,i+1)*ds;
+    xk(:,i+1)=xref;
+    task.Ego.position=task.Ego.position+xk(1,i+1)*ds;
     x0=[xk(1,i+1) xk(2,i+1)];
     
     if simulate==1 && mod(i,2)==0
         figure(1)
         clf
         %Plot road,car and obstacles
-        plotroad(task,xPos(i+1)-0.1*ph*vD,xPos(i+1)+1.1*ph*vD,noOfLanes)
-        plotcar(xPos(i+1),xk(2,i+1))
+        plotroad(task,task.Ego.position-0.1*ph*vD,task.Ego.position+1.1*ph*vD,noOfLanes)
+        plotcar(task.Ego.position,xk(2,i+1))
         for u=1:length(task.obstacle)
-            if abs(task.obstacle{u}.position-xPos(i))<2*ph*vD
+            if abs(task.obstacle{u}.position-task.Ego.position)<2*ph*vD
                 pl1=plot(task.obstacle{u}.position,task.obstacle{u}.yPosition,task.obstacle{u}.colour);
             end
         end
@@ -116,7 +115,7 @@ for i=1:simTime
         pl4=plot(xPosEst(1:ph),bound(:,1),'k');
         pl5=plot(xPosEst(1:ph),bound(:,2),'k');
         % plot normal overtaking distance
-        plot(xPos(i+1)+task.Ego.overtakingLength,2.5,'y+');
+        plot(task.Ego.position+task.Ego.overtakingLength,2.5,'y+');
         pause(0.0001/ph)
     end
     %     if mod(i,ceil(simTime/1000))==0 && simulate==0

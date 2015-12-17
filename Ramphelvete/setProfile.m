@@ -16,8 +16,8 @@ end
 if prof=='N'
     disp('Normal driving mode selected')
     pause(0.5)
-    profile.qx_ref = [1 0;0 10];
-    profile.qax = 20;
+    profile.qx_ref = [10 0;0 10];
+    profile.qax = 200;
     profile.qvy = 400;
     profile.qjx = 100;
     profile.qay = 300;
