@@ -10,10 +10,10 @@ safetyMargin=task.Ego.longsafetymargin;
 task.Ego.horizon=300;
 ph = task.Ego.horizon;
 % Simulation
-simTime = 20000; %Simulation time
+simTime = 2000; %Simulation time
 askInput=0;
 simulate = 1;
-noOfLanes = 3; %2 or 3
+noOfLanes = 2; %2 or 3
 % Set profile, 'help setProfile' for more details
 profile='N';
 
@@ -71,7 +71,7 @@ yvecTemp=ones(1,ph)*laneWidth/2;
 %% Set Obstacle
 p1=0.008;
 p2=0.01;
-task.obstacle=generateObstacle(p1,simTime,task,noOfLanes);
+task.obstacle=generateObstacle(p1,simTime,task,noOfLanes,1);
 
 %% Main loop
 H=sparse(H);
@@ -80,6 +80,7 @@ beq=sparse(beq);
 
 for i=1:simTime
     tic
+    task=updateAdjacent(task);
     if (mod(i,mpcInterval)==0 || i==1 )
         counter=0;
         xPosEst(1)=xPos(i);

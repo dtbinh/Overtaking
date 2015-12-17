@@ -21,7 +21,7 @@ function xsp=generateXsp(xPos,task,ph)
                     if task.obstacle{k}.yPosition==laneWidth/2;
                     xsp(2,i)=3*laneWidth/2;
                     elseif task.obstacle{k}.yPosition==3*laneWidth/2;
-                    xsp(2,i)=5*laneWidth/2;    
+                    %xsp(2,i)=5*laneWidth/2;    
                     end
                 end
             end

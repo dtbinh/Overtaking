@@ -7,15 +7,15 @@ task.road=roadsegment;
 task.Ego=standardcar;
 laneWidth=task.road.lanewidth;
 safetyMargin=task.Ego.longsafetymargin;
-task.Ego.horizon=300;
+task.Ego.horizon=1000;
 ph = task.Ego.horizon;
 % Simulation
-simTime = 20000; %Simulation time
+simTime = 200; %Simulation time
 askInput=0;
 simulate = 1;
 noOfLanes = 3; %2 or 3
 % Set profile, 'help setProfile' for more details
-profile='N';
+profile='C';
 
 %% Print information
 if askInput
@@ -60,74 +60,35 @@ xPos=zeros(simTime,1);
 errorSum=0;
 
 %% Set MPC parameters
-mpcInterval=30;
 vvecTemp=ones(1,ph)*(task.Ego.velocity-task.obstacle.velocity);
-
 [H,Aeq,beq]=mpcInit(A,B,C,ph,task,ds);
 yvecTemp=ones(1,ph)*laneWidth/2;
 
 
 
 %% Set Obstacle
-p1=0.008;
+p1=0.01;
 p2=0.01;
-task.obstacle=generateObstacle(p1,simTime,task,noOfLanes);
+task.obstacle=generateObstacle(0,simTime,task,noOfLanes);
 
 %% Main loop
-H=sparse(H);
-Aeq=sparse(Aeq);
-beq=sparse(beq);
 
-for i=1:simTime
-    tic
-    if (mod(i,mpcInterval)==0 || i==1 )
-        counter=0;
-        xPosEst(1)=xPos(i);
+
+
+        xPosEst(1)=xPos(1);
         for k=1:ph
             xPosEst(k+1)=xPosEst(k)+vvecTemp(k);
         end
         xsp=generateXsp(xPosEst,task,ph);
-        
+        H=sparse(H);
+        Aeq=sparse(Aeq);
+        beq=sparse(beq);
+        for i=1:100
+        tic
         %% Calculate MPC trajectory
         [vvecTemp,yvecTemp,bound]=MPCtrajectory(A,B,C,task,ph,xsp,x0,H,Aeq,beq,noOfLanes,ds);
-        
-    end
-    counter=counter+1;
-    xref=[vvecTemp(counter+1);yvecTemp(counter+1)];
-    [xk(:,i+1),errorSum] = PID(A,B,xref,xk(:,i),errorSum);
-    xPos(i+1)=xPos(i)+xk(1,i+1)*ds;
-    x0=[xk(1,i+1) xk(2,i+1)];
-    
-    if simulate==1 && mod(i,2)==0
-        figure(1)
-        clf
-        %Plot road,car and obstacles
-        plotroad(task,xPos(i+1)-0.1*ph*vD,xPos(i+1)+1.1*ph*vD,noOfLanes)
-        plotcar(xPos(i+1),xk(2,i+1))
-        for u=1:length(task.obstacle)
-            if abs(task.obstacle{u}.position-xPos(i))<2*ph*vD
-                pl1=plot(task.obstacle{u}.position,task.obstacle{u}.yPosition,task.obstacle{u}.colour);
-            end
-        end
-        hold on
-        %plot trajectory
-        pl2=plot(xPosEst(1:ph),xsp(2,:),'r--');
-        pl3=plot(xPosEst(1:ph),yvecTemp,'b');
-        pl4=plot(xPosEst(1:ph),bound(:,1),'k');
-        pl5=plot(xPosEst(1:ph),bound(:,2),'k');
-        % plot normal overtaking distance
-        plot(xPos(i+1)+task.Ego.overtakingLength,2.5,'y+');
-        pause(0.0001/ph)
-    end
-    %     if mod(i,ceil(simTime/1000))==0 && simulate==0
-    %     waitbar(i/simTime)
-    %     end
-    time(i)=toc;
-end
-legend([pl1,pl2,pl3,pl4],{'Leading vehicles','Setpoint trajectory','MPC trajectory','Boundary',})
-xlabel('Relative distance [m]')
-ylabel('Y position [m]')
-figure(2)
-plot(time)
 
-sum(time)
+        time(i)=toc;
+        end
+        mean(time)*1000
+        
