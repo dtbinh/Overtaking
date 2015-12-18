@@ -1,4 +1,4 @@
-function y = MPCtrajectory_vehmod(xin)
+function y = MPC1(xin)
 
 LenaPh = 150;
 

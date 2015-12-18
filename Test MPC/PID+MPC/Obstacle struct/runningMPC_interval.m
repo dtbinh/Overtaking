@@ -2,7 +2,7 @@ clear
 close
 clc
 %% Parameters
-task=struct;
+task = struct;
 task.road=roadsegment;
 task.Ego=standardcar;  
 laneWidth=task.road.lanewidth;
